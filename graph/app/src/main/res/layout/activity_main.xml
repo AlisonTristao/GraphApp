@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <com.androidplot.xy.XYPlot
+            style="@style/APDefacto.Dark"
+            android:id="@+id/grafico"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+
+            app:title="Erro por tempo"
+            app:rangeTitle="Erro"
+            app:domainTitle="Tempo"
+            app:lineLabels="left|bottom"
+            app:lineLabelRotationBottom="-45">
+        </com.androidplot.xy.XYPlot>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="left"
+        android:background="@color/ap_transparent">
+
+        <Button
+            android:id="@+id/btnBT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:text="Bluetooth" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="left"
+        android:background="@color/ap_transparent">
+
+        <Button
+            android:id="@+id/btnRolar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:text="Rolar" />
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
