@@ -21,7 +21,7 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    // grafico
+    // grafico 
     private XYPlot plot;
     Number[] series1Numbers;
     XYSeries series1;
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // define q mesmo se encostar na tela continua hide
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
+                | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
         );
     }
 
