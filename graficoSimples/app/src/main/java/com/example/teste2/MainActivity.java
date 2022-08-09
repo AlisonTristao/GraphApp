@@ -21,7 +21,7 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    // grafico 
+    // grafico
     private XYPlot plot;
     Number[] series1Numbers;
     XYSeries series1;
