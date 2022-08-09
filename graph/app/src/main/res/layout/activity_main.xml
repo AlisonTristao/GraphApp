@@ -28,7 +28,8 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="120dp"
+        android:id="@+id/cardBtConf"
+        android:layout_width="95dp"
         android:layout_height="40dp"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="40dp"
@@ -36,27 +37,136 @@
         android:background="@color/ap_transparent">
 
         <Button
-            android:id="@+id/btnBT"
+            android:id="@+id/btnConf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:text="Bluetooth" />
+            android:text="Config" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="120dp"
+        android:id="@+id/cardRol"
+        android:layout_width="95dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="200dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="40dp"
         android:layout_gravity="left"
         android:background="@color/ap_transparent">
 
-        <Button
-            android:id="@+id/btnRolar"
+
+        <Switch
+            android:layout_margin="5dp"
+            android:id="@+id/swtRol"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:text="Rolar" />
+            android:text="@string/rolar"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardConf"
+        android:layout_width="280dp"
+        android:layout_height="290dp"
+        android:layout_gravity="center"
+        android:background="@color/ap_transparent">
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ke"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="80dp"
+            />
+
+        <EditText
+            android:id="@+id/txtKe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/digite_o_ke"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="70dp"/>
+
+        <TextView
+            android:id="@+id/txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kd1"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="130dp"
+            />
+
+        <EditText
+            android:id="@+id/txtKd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/digite_o_kd"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="120dp"/>
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ki"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="180dp"
+            />
+
+        <EditText
+            android:id="@+id/txtKi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/digite_o_ki"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="170dp"/>
+
+        <Button
+            android:id="@+id/btnBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnCopiar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aaa"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="230dp"
+            />
+
+        <TextView
+            android:id="@+id/txt4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/con"
+            android:textSize="15sp"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/txtDispositivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ip"
+            android:textSize="15sp"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="20dp"
+            />
+    </androidx.cardview.widget.CardView>
+
 </FrameLayout>

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">graph</string>
+    <string name="ke">Ke:</string>
+    <string name="digite_o_ke">Digite o Ke</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="copiar">Copiar</string>
+    <string name="kd">kd:</string>
+    <string name="kd1">Kd:</string>
+    <string name="digite_o_kd">Digite o kd</string>
+    <string name="ki">Ki:</string>
+    <string name="digite_o_ki">Digite o ki</string>
+    <string name="rolar">Rolar</string>
+    <string name="con">con:</string>
+    <string name="aaa">Copiar para área de trasferencia</string>
 </resources>

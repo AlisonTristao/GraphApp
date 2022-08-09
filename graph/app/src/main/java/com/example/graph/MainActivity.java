@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
@@ -26,19 +27,28 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Boolean rola = false; // salva se o grafico esta rolando ou nao
-    public Button btnRolar; // botao para o grafico acompanha a linha
-    public Button btnBT; // botao para abrir o bt
+    public Boolean rola = true; // salva se o grafico esta rolando ou nao
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    public Switch swtRolar; // botao para o grafico acompanha a linha
+    public Button btnConf; // botao para abrir as conf
     public XYPlot grafico; // grafico
     public XYSeries linha; // linha
     public Number[] valores = {0}; // valores do grafico
+    public CardView cardConf; //
 
     @SuppressLint("WrongViewCast")
     public void iniciaComponentes(){
         // inicia os componenetes como elemento do xml
         grafico = findViewById(R.id.grafico);
-        btnBT = findViewById(R.id.btnBT);
-        btnRolar = findViewById(R.id.btnRolar);
+        btnConf = findViewById(R.id.btnConf);
+        cardConf = findViewById(R.id.cardConf);
+        swtRolar = findViewById(R.id.swtRol);
+
+        // define como nao nao rolage
+        swtRolar.isChecked();
+
+        // define como invisivel as configuraçoes
+        cardConf.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -61,18 +71,28 @@ public class MainActivity extends AppCompatActivity {
 
         // -------------- botes ---------------//
         // bluetooth
-        btnBT.setOnClickListener(new View.OnClickListener() {
+        btnConf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(cardConf.getVisibility() != View.VISIBLE) {
+                    cardConf.setVisibility(View.VISIBLE);
+                }else{
+                    cardConf.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
-        // rolagem
-        btnRolar.setOnClickListener(new View.OnClickListener() {
+        // sitch
+        swtRolar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rola = !rola; // recebe o contrario dela
+                if(swtRolar.isActivated()){
+                    swtRolar.setActivated(false);
+                    rola = true;
+                }else{
+                    swtRolar.setActivated(true);
+                    rola = false;
+                }
             }
         });
 
@@ -129,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         // redesenha as linhas
         grafico.redraw();
 
-        if(!rola) { // deixa o grafico acompanhando a linha
+        if(rola) { // deixa o grafico acompanhando a linha
             grafico.setDomainBoundaries(valores.length - 9, valores.length, BoundaryMode.FIXED);
         }
     }
