@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // esconde as bars
+        hideSystemBars();
+
         //inicia os componentes
         iniciaComponentes();
 
@@ -55,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         // plota o grafico
         plotaGraf(grafico);
-
-        // esconde as bars
-        hideSystemBars();
 
         // -------------- botes ---------------//
         // bluetooth
