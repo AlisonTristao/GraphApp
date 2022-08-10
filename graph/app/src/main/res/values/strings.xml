@@ -12,4 +12,9 @@
     <string name="rolar">Rolar</string>
     <string name="con">con:</string>
     <string name="aaa">Copiar para área de trasferencia</string>
+    <string name="limpar">Limpar</string>
+    <string name="config">Config</string>
+    <string name="x">X</string>
+    <string name="copiar_resultado">Copiar resultado</string>
+    <string name="enviar_constantes">Enviar constantes</string>
 </resources>

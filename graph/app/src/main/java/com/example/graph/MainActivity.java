@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,14 +30,17 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Boolean rola = true; // salva se o grafico esta rolando ou nao
+    public Boolean rola = true;     // salva se o grafico esta rolando ou nao
+    public Button btnCopiar;        // copia o array pra area de trasferecencia
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    public Switch swtRolar; // botao para o grafico acompanha a linha
-    public Button btnConf; // botao para abrir as conf
-    public XYPlot grafico; // grafico
-    public XYSeries linha; // linha
-    public Number[] valores = {0}; // valores do grafico
-    public CardView cardConf; //
+    public Switch swtRolar;         // botao para o grafico acompanha a linha
+    public Button btnConf;          // botao para abrir as conf
+    public Button btnX;             // fecha o cardConfig
+    public Button btnLimpar;        // botao para limpar o grafico
+    public XYPlot grafico;          // grafico
+    public XYSeries linha;          // linha
+    public Number[] valores = {0};  // valores do grafico
+    public CardView cardConf;       // card das configurações
 
     @SuppressLint("WrongViewCast")
     public void iniciaComponentes(){
@@ -43,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         btnConf = findViewById(R.id.btnConf);
         cardConf = findViewById(R.id.cardConf);
         swtRolar = findViewById(R.id.swtRol);
+        btnLimpar = findViewById(R.id.btnLimpar);
+        btnX = findViewById(R.id.fechar);
+        btnCopiar = findViewById(R.id.btnCopiar);
 
         // define como nao nao rolage
         swtRolar.isChecked();
@@ -96,6 +105,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnCopiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Gets a handle to the clipboard service.
+                ClipboardManager clipboard = (ClipboardManager)
+                        getSystemService(Context.CLIPBOARD_SERVICE);
+
+                // Creates a new text clip to put on the clipboard
+                ClipData clip = ClipData.newPlainText("simple text", "Hello, World!");
+
+                // Set the clipboard's primary clip.
+                clipboard.setPrimaryClip(clip);
+
+            }
+        });
+
+        btnLimpar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                valores = new Number[]{0};
+            }
+        });
+
+        btnX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardConf.setVisibility(View.INVISIBLE);
+            }
+        });
+
         new th().start();
     }
 
@@ -105,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(
           View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // define q mesmo se encostar na tela continua hide
         | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
-        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
+        //| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
         );
     }
 
