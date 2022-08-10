@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         getSystemService(Context.CLIPBOARD_SERVICE);
 
                 // adiciona o dadosGrafico em algo "copiavel"
-                ClipData clip = ClipData.newPlainText("simple text", "Hello \nWorld!");
+                ClipData clip = ClipData.newPlainText("simple text", copiaDados());
 
                 // adiciona oq foi copiado na area de trasferencia
                 clipboard.setPrimaryClip(clip);
