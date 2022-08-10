@@ -11,7 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Boolean rola = true;     // salva se o grafico esta rolando ou nao
     public Button btnCopiar;        // copia o array pra area de trasferecencia
+    public Button btnEnviar;        // envia as constantes pro carrinho
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     public Switch swtRolar;         // botao para o grafico acompanha a linha
     public Button btnConf;          // botao para abrir as conf
@@ -41,17 +44,24 @@ public class MainActivity extends AppCompatActivity {
     public XYSeries linha;          // linha
     public Number[] valores = {0};  // valores do grafico
     public CardView cardConf;       // card das configurações
+    public EditText edtKe;          // txt q tem os valores do Ke
+    public EditText edtKd;          // txt q tem os valores do Kd
+    public EditText edtKi;          // txt q tem os valores do Ki
 
     @SuppressLint("WrongViewCast")
     public void iniciaComponentes(){
         // inicia os componenetes como elemento do xml
         grafico = findViewById(R.id.grafico);
         btnConf = findViewById(R.id.btnConf);
+        btnEnviar = findViewById(R.id.btnEnviarCons);
         cardConf = findViewById(R.id.cardConf);
         swtRolar = findViewById(R.id.swtRol);
         btnLimpar = findViewById(R.id.btnLimpar);
         btnX = findViewById(R.id.fechar);
         btnCopiar = findViewById(R.id.btnCopiar);
+        edtKe = findViewById(R.id.txtKe);
+        edtKd = findViewById(R.id.txtKd);
+        edtKi = findViewById(R.id.txtKi);
 
         // define como nao nao rolage
         swtRolar.isChecked();
@@ -105,18 +115,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // {ke,kd,ki}
+                String texto = "{"+edtKe.getText()+","+edtKd.getText()+","+edtKi.getText()+"}";
+
+                // enviar por bluetooth
+            }
+        });
+
         btnCopiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Gets a handle to the clipboard service.
+
+                // manipulador da area de trasferencia
                 ClipboardManager clipboard = (ClipboardManager)
                         getSystemService(Context.CLIPBOARD_SERVICE);
 
-                // Creates a new text clip to put on the clipboard
-                ClipData clip = ClipData.newPlainText("simple text", "Hello, World!");
+                // adiciona o dadosGrafico em algo "copiavel"
+                ClipData clip = ClipData.newPlainText("simple text", "Hello \nWorld!");
 
-                // Set the clipboard's primary clip.
+                // adiciona oq foi copiado na area de trasferencia
                 clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(MainActivity.this,
+                        "Copiado para a área de trasferencia!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -138,6 +162,25 @@ public class MainActivity extends AppCompatActivity {
         new th().start();
     }
 
+    protected String copiaDados(){
+
+        /*
+        * Botei \n pq se colar no excel ele divide em celulas diferentes
+        * dai fica mais facil pra montar uma planhilha com os graficos
+        * */
+
+        String dadosGrafico = Arrays.toString(valores);                // converte array pra string
+        dadosGrafico = dadosGrafico.substring(1, dadosGrafico.length()-1);           // retira os []
+        dadosGrafico = dadosGrafico.replaceAll(",", "\n");    // trasforma firgula em \n
+
+        // salva as constantes
+        String constatnes = "Ke: "+edtKe.getText()+" Kd: "+edtKd.getText()+" Ki: "+edtKi.getText();
+
+        // retorna as constantes mais o grafico
+        return(constatnes + "\n" + dadosGrafico);
+
+    }
+
     protected void hideSystemBars() {
         //deixa app em full screen
         View decorView = getWindow().getDecorView();
@@ -153,8 +196,9 @@ public class MainActivity extends AppCompatActivity {
 
         // define o dominio fixo de 1 a 9
         grafico.setDomainBoundaries(0, 9, BoundaryMode.FIXED);
-        // define a altura fixa de -7 a 7
+        // define a altura fixo de -7 a 7
         grafico.setRangeBoundaries(-7, 7, BoundaryMode.FIXED);
+        // esses 2 de cima são meio bugados pq n respeita direito seila
 
         grafico.setRangeStep(StepMode.SUBDIVIDE, 15);  // 15 linhas horizontais
         grafico.setDomainStep(StepMode.SUBDIVIDE, 10); // 10 linhas verticais
@@ -172,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
         // atualiza a linha com o valor do array
         linha = new SimpleXYSeries(Arrays.asList(valores),
-                                        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Erro");
+                                        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Dados recebidos");
 
         // formata a aparecia da linha
         LineAndPointFormatter formatoLinha =
@@ -219,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     public class th extends Thread{// função q vai executar em segundo plano
         public void run() {
 
-            int[] valores = {1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0, -1, 2, -3};
+            int[] valores = {1, -1, 3, 2, 5, 7, 3, -2, -7, 4, 5, 7, 6, 0, -1, -2, -3};
             int a = 0;
 
             while (a < valores.length) {
