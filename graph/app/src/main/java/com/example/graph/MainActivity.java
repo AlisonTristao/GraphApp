@@ -78,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // esconde as bars
-        hideSystemBars();
+        // deixa status bar e nav bar black (n sei pintar pelo xml)
+        getWindow().setStatusBarColor(Color.BLACK);
+        getWindow().setNavigationBarColor(Color.BLACK);
 
         //inicia os componentes
         iniciaComponentes();
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         // limpa os dados do grafico
         btnLimpar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {valores = new Number[]{0};}});
+            public void onClick(View view) {valores = new Number[]{};}});
 
         btnX.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,16 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
         // retorna as constantes mais o grafico
         return(constatnes + "\n" + dadosGrafico);
-    }
-
-    protected void hideSystemBars() {
-        //deixa app em full screen
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // define q mesmo se encostar na tela continua hide
-        | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
-        //| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde bar  <| O []
-        );
     }
 
     protected void criaGrafico(){
