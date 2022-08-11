@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         grafico.setDomainBoundaries(0, 9, BoundaryMode.FIXED);
         // define a altura fixo de -7 a 7
         grafico.setRangeBoundaries(-7, 7, BoundaryMode.FIXED);
-        // esses 2 de cima são meio bugados pq n respeita direito seila
 
         grafico.setRangeStep(StepMode.SUBDIVIDE, 15);  // 15 linhas horizontais
         grafico.setDomainStep(StepMode.SUBDIVIDE, 10); // 10 linhas verticais
@@ -222,9 +221,9 @@ public class MainActivity extends AppCompatActivity {
         LineAndPointFormatter formatoLinha =
                 new LineAndPointFormatter(this, R.xml.estilo_da_linha);
 
-        // suaviza a linha
-        formatoLinha.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
+        // suaviza a linha (deixa picos redondos)
+        //formatoLinha.setInterpolationParams(
+        //        new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
         // adiciona a linha no grafico novamente
         grafico.addSeries(linha, formatoLinha);
@@ -245,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
                 int i = Math.round(((Number) obj).floatValue());
-                return toAppendTo.append(1);
+                return toAppendTo.append(i);
             }
             @Override
             public Object parseObject(String source, ParsePosition pos) {

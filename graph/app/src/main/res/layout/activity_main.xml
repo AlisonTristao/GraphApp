@@ -14,7 +14,7 @@
         tools:context=".MainActivity">
 
         <com.androidplot.xy.XYPlot
-            android:layout_marginTop="20dp"
+            android:layout_margin="10dp"
             style="@style/APDefacto.Dark"
             android:id="@+id/grafico"
             android:layout_height="fill_parent"
@@ -29,31 +29,36 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardBtConf"
         android:layout_width="95dp"
         android:layout_height="40dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
         android:layout_gravity="left"
-        android:background="@color/ap_transparent">
+        card_view:cardBackgroundColor="#AAAAAAAA"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/btnConf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/trasparente"
+            android:textColor="@color/black"
             android:text="@string/config" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardRol"
         android:layout_width="95dp"
         android:layout_height="40dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="160dp"
         android:layout_gravity="left"
-        android:background="@color/ap_transparent">
+        card_view:cardBackgroundColor="#AAAAAAAA"
+        tools:ignore="RtlHardcoded">
 
 
         <Switch
@@ -62,24 +67,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/rolar"
+            android:textColor="@color/white"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardLimpar"
         android:layout_width="95dp"
         android:layout_height="40dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="110dp"
         android:layout_gravity="left"
-        android:background="@color/ap_transparent">
+        card_view:cardBackgroundColor="#AAAAAAAA"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/btnLimpar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/limpar"
-            android:background="@color/white"
+            android:background="@color/trasparente"
+            android:textColor="@color/black"
             />
 
     </androidx.cardview.widget.CardView>
