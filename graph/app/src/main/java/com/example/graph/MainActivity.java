@@ -15,10 +15,12 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PanZoom;
+import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.StepMode;
 import com.androidplot.xy.XYGraphWidget;
@@ -36,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
     public Button btnCopiar;        // copia o array pra area de trasferecencia
     public Button btnEnviar;        // envia as constantes pro carrinho
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    public Switch swtRolar;         // botao para o grafico acompanha a linha
-    public Button btnConf;          // botao para abrir as conf
+    public Switch swtRolar;         // faz grafico acompanhar a linha
+    public Button btnConf;          // abre as conf
     public Button btnX;             // fecha o cardConfig
-    public Button btnLimpar;        // botao para limpar o grafico
+    public Button btnLimpar;        // limpa o grafico
     public XYPlot grafico;          // grafico
     public XYSeries linha;          // linha
     public Number[] valores = {0};  // valores do grafico
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         edtKd = findViewById(R.id.txtKd);
         edtKi = findViewById(R.id.txtKi);
 
-        // define como nao nao rolage
+        // define como nao no swt de rolar o grafico
         swtRolar.isChecked();
 
         // define como invisivel as configuraçoes
@@ -88,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
         // plota o grafico
         plotaGraf(grafico);
 
-        // -------------- botes ---------------//
+        //-----------------------------// botes //----------------------------//
+
         // bluetooth
         btnConf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // sitch
+        // switch
         swtRolar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // enviar os dados
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // copia para area de trasferencia
         btnCopiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,46 +144,41 @@ public class MainActivity extends AppCompatActivity {
                 // adiciona oq foi copiado na area de trasferencia
                 clipboard.setPrimaryClip(clip);
 
+                // mensagem
                 Toast.makeText(MainActivity.this,
                         "Copiado para a área de trasferencia!", Toast.LENGTH_SHORT).show();
 
             }
         });
 
+        // limpa os dados do grafico
         btnLimpar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                valores = new Number[]{0};
-            }
-        });
+            public void onClick(View view) {valores = new Number[]{0};}});
 
         btnX.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                cardConf.setVisibility(View.INVISIBLE);
-            }
-        });
+            public void onClick(View view) {cardConf.setVisibility(View.INVISIBLE);}});
 
+        // isso aqui vou apagar
         new th().start();
     }
 
     protected String copiaDados(){
-
         /*
         * Botei \n pq se colar no excel ele divide em celulas diferentes
         * dai fica mais facil pra montar uma planhilha com os graficos
         * */
 
-        String dadosGrafico = Arrays.toString(valores);                // converte array pra string
-        dadosGrafico = dadosGrafico.substring(1, dadosGrafico.length()-1);           // retira os []
-        dadosGrafico = dadosGrafico.replaceAll(",", "\n");    // trasforma firgula em \n
+        String dadosGrafico = Arrays.toString(valores);                   // converte array pra string
+        dadosGrafico = dadosGrafico.substring(1, dadosGrafico.length()-1);// retira os []
+        dadosGrafico = dadosGrafico.replaceAll(",", "\n");// trasforma virgula em \n
 
         // salva as constantes
         String constatnes = "Ke: "+edtKe.getText()+" Kd: "+edtKd.getText()+" Ki: "+edtKi.getText();
 
         // retorna as constantes mais o grafico
         return(constatnes + "\n" + dadosGrafico);
-
     }
 
     protected void hideSystemBars() {
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(
           View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // define q mesmo se encostar na tela continua hide
         | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
-        //| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
+        //| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde bar  <| O []
         );
     }
 
@@ -216,11 +216,11 @@ public class MainActivity extends AppCompatActivity {
 
         // atualiza a linha com o valor do array
         linha = new SimpleXYSeries(Arrays.asList(valores),
-                                        SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Dados recebidos");
+                                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Dados recebidos");
 
         // formata a aparecia da linha
         LineAndPointFormatter formatoLinha =
-                new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
+                new LineAndPointFormatter(this, R.xml.estilo_da_linha);
 
         // suaviza a linha
         formatoLinha.setInterpolationParams(
@@ -228,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
 
         // adiciona a linha no grafico novamente
         grafico.addSeries(linha, formatoLinha);
+
+
 
         // redesenha as linhas
         grafico.redraw();
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void plotaGraf(XYPlot grafico){
         // plota o grafico
-        grafico.getGraph().getLineLabelStyle(XYGraphWidget.Edge.TOP).setFormat(new Format() {
+        grafico.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
                 int i = Math.round(((Number) obj).floatValue());
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
             while (a < valores.length) {
                 try {
-                    sleep(100);
+                    sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
