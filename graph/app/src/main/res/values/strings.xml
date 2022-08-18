@@ -17,4 +17,6 @@
     <string name="x">X</string>
     <string name="copiar_resultado">Copiar resultado</string>
     <string name="enviar_constantes">Enviar constantes</string>
+    <string name="velocidade">Velocidade</string>
+    <string name="velocidade1">Velocidade:</string>
 </resources>
