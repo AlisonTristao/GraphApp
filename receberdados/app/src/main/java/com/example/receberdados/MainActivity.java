@@ -58,20 +58,6 @@ public class MainActivity extends AppCompatActivity {
     public void iniciarComponentes(){
         // define os componentes que criamos como os elementos do xml
         btnConectar = findViewById(R.id.btnConectar);
-
-        // full screen
-        hideSystemBars();
-    }
-
-    // esconde as barras de navegação e barra de status
-    protected void hideSystemBars() {
-        //deixa app em full screen
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // define q mesmo se encostar na tela continua hide
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // esconde status bar
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // esconde statusbar
-        );
     }
 
     @SuppressLint({"MissingPermission", "HandlerLeak"})
@@ -97,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
             // (aqui da um erro q n sei o pq, eu suprimi e funcionou ok)
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQ_BT);
-
-            // esconde o hide
-            hideSystemBars();
         }
 
         // -------- codigos dos botoes -------- //
@@ -141,29 +124,12 @@ public class MainActivity extends AppCompatActivity {
                     // junta os dados enquanto esta recebendo algo
                     dadosRecebidosBT.append(recebidos);
 
-                    // envie os dados assim:
-                    // {dados}
-                    // para {} sabermos o final e inicios
+                    // o codigo de antes estava desatualizado e n funcionava direito
+                    // assim ele ja funciona ok
 
-                    // quarda o index do ultimo caracter
-                    int fim = dadosRecebidosBT.indexOf("}");
-
-                    // se o final ser maior q 0 recebeu algo
-                    if(fim > 0){
-                        // agora comparamos o começo pra saber se o dados veio inteiro
-                        if(dadosRecebidosBT.charAt(0) == '{'){
-
-                            // entao nossos dados vao ser os dados totais -1 no comeco e -1 no final
-                            String dados = dadosRecebidosBT.substring(1, dadosRecebidosBT.length());
-
-                            // entao aqui sua informação chegou completa em dados
-                            Toast.makeText(MainActivity.this, dados, Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        // limpa a variavel pro proximo loop
-                        dadosRecebidosBT.delete(0, fim);
-                    }
+                    TextView txt = findViewById(R.id.textView);
+                    txt.setText(dadosRecebidosBT);
+                    dadosRecebidosBT.delete(0, dadosRecebidosBT.length());
                 }
             }
         };
@@ -223,9 +189,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "Erro ao obeter endereço Mac!",
                             Toast.LENGTH_SHORT).show();
                 }
-
-                // full screen
-                hideSystemBars();
                 break;
         }
     }
