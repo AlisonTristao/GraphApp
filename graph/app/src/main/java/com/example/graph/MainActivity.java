@@ -17,6 +17,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     public EditText edtKd;          // txt q tem os valores do Kd
     public EditText edtKi;          // txt q tem os valores do Ki
     public EditText edtVel;         // txt q tem o valor da velocidade
+    public EditText rangeImagem;    // aumenta o range da imagem do grafico
 
     // variaveis usadas no grafico
     public XYPlot grafico;          // grafico
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         edtKi = findViewById(R.id.txtKi);
         btnConectar = findViewById(R.id.btnBlue);
         edtVel = findViewById(R.id.txtVelocidade);
+        rangeImagem = findViewById(R.id.rangeImagem);
 
         // define como nao no swt de rolar o grafico
         swtRolar.isChecked();
@@ -254,6 +258,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {cardConf.setVisibility(View.INVISIBLE);}});
 
+        // aumenta o range da imagem do grafico
+        rangeImagem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // verifica se n é valor nulo
+                if(!String.valueOf(rangeImagem.getText()).equals("")) {
+                    int range = Integer.parseInt(String.valueOf(rangeImagem.getText()));
+                    grafico.setRangeBoundaries(-range, range, BoundaryMode.FIXED);
+                }else{
+                    grafico.setRangeBoundaries(-0, 0, BoundaryMode.FIXED);
+                }
+
+                grafico.redraw();
+            }
+        });
+
         //-----------------------------// recebe dados //----------------------------//
 
         // fica monitorando sozinho quando recebe mensagem
@@ -269,15 +299,20 @@ public class MainActivity extends AppCompatActivity {
                     // junta os dados enquanto esta recebendo algo
                     dadosRecebidosBT.append(recebidos);
 
-                    // o codigo de antes estava desatualizado e n funcionava direito
-                    // assim ele ja funciona ok
+                    // {dados} =  as chaves para saber se os dados vieram inteiros
 
-                    //converte obg pra string e depois interio e add na linha
-                    try {
-                        appendLinha(Integer.parseInt(String.valueOf(dadosRecebidosBT)));
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(MainActivity.this, "Erro ao receber dados!",
-                                                                    Toast.LENGTH_SHORT).show();
+                    if(dadosRecebidosBT.indexOf("}") > 0){
+                        // verifica se o dado veio inteiro
+                        if(dadosRecebidosBT.charAt(0) == '{'){
+
+                            // tira as chaves
+                            String dados = dadosRecebidosBT.substring(1, dadosRecebidosBT.indexOf("}"));
+
+                            // converte pra int e add na linha
+                            appendLinha(Float.parseFloat(dados));
+                        }
+
+                        // n botei mensagem de erro quando dado é inclompeto pq enchia o saco
                     }
 
                     // limpa a variavel
@@ -312,17 +347,18 @@ public class MainActivity extends AppCompatActivity {
 
         // define o dominio fixo de 1 a 9
         grafico.setDomainBoundaries(0, 9, BoundaryMode.FIXED);
-        // define a altura fixo de -7 a 7
-        grafico.setRangeBoundaries(-7, 7, BoundaryMode.FIXED);
+        // define a altura fixo de 255 a 255
+        grafico.setRangeBoundaries(-255, 255, BoundaryMode.FIXED);
 
         grafico.setRangeStep(StepMode.SUBDIVIDE, 15);  // 15 linhas horizontais
         grafico.setDomainStep(StepMode.SUBDIVIDE, 10); // 10 linhas verticais
 
         // define como grafico rolavel para o lado (panoramico)
+
         PanZoom.attach(grafico, PanZoom.Pan.HORIZONTAL, PanZoom.Zoom.STRETCH_HORIZONTAL);
     }
 
-    protected void appendLinha(int valor){
+    protected void appendLinha(float valor){
         // remove a linha antiga
         grafico.removeSeries(linha);
 
@@ -493,5 +529,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
+
+
     }
 }

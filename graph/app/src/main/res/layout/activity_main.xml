@@ -15,18 +15,17 @@
         tools:context=".MainActivity">
 
         <com.androidplot.xy.XYPlot
-            android:layout_margin="10dp"
-            style="@style/APDefacto.Dark"
             android:id="@+id/grafico"
-            android:layout_height="fill_parent"
+            style="@style/APDefacto.Dark"
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
 
-            app:title="Dados recebidos por Bluetooth"
-            app:rangeTitle="Imagem"
             app:domainTitle="Dominio"
+            app:lineLabelRotationBottom="-45"
             app:lineLabels="left|bottom"
-            app:lineLabelRotationBottom="-45">
-        </com.androidplot.xy.XYPlot>
+            app:rangeTitle="Imagem"
+            app:title="Dados recebidos por Bluetooth"></com.androidplot.xy.XYPlot>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -92,6 +91,29 @@
             android:textColor="@color/black"
             />
 
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_gravity="left|center"
+        android:id="@+id/cardImagem"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="-30dp"
+        android:layout_marginTop="100dp"
+        android:rotation="-90"
+        app:cardBackgroundColor="#AAAAAAAA"
+        tools:ignore="RtlHardcoded">
+
+        <EditText
+            android:id="@+id/rangeImagem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-5dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="255"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
