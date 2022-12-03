@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     // botoes e cards
     public Boolean rola = true;     // salva se o grafico esta rolando ou nao
     public Button btnConectar;     // conexap bt
-    public Button btnCopiar;        // copia o array pra area de trasferecencia
+    public Button btnStop;        // copia o array pra area de trasferecencia
     public Button btnEnviar;        // envia as constantes pro carrinho
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     public Switch swtRolar;         // faz grafico acompanhar a linha
@@ -61,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
     public Button btnX;             // fecha o cardConfig
     public Button btnLimpar;        // limpa o grafico
     public CardView cardConf;       // card das configurações
-    public EditText edtKe;          // txt q tem os valores do Ke
+    public EditText edtKp;          // txt q tem os valores do Ke
     public EditText edtKd;          // txt q tem os valores do Kd
     public EditText edtKi;          // txt q tem os valores do Ki
+    public EditText edtCte;         // tct q tem os valores da constante de curvas
     public EditText edtVel;         // txt q tem o valor da velocidade
     public EditText rangeImagem;    // aumenta o range da imagem do grafico
 
@@ -102,10 +103,11 @@ public class MainActivity extends AppCompatActivity {
         swtRolar = findViewById(R.id.swtRol);
         btnLimpar = findViewById(R.id.btnLimpar);
         btnX = findViewById(R.id.fechar);
-        btnCopiar = findViewById(R.id.btnCopiar);
-        edtKe = findViewById(R.id.txtKe);
+        btnStop = findViewById(R.id.btnStop);
+        edtKp = findViewById(R.id.txtKp);
         edtKd = findViewById(R.id.txtKd);
         edtKi = findViewById(R.id.txtKi);
+        edtCte = findViewById(R.id.txtCte);
         btnConectar = findViewById(R.id.btnBlue);
         edtVel = findViewById(R.id.txtVelocidade);
         rangeImagem = findViewById(R.id.rangeImagem);
@@ -211,8 +213,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // {ke,kd,ki,velocidade}
-                String texto = "{"+edtKe.getText()+","+
-                                edtKd.getText()+","+edtKi.getText()+","+edtVel.getText()+"}";
+                String texto =
+                "{"+edtKp.getText()+"/"+ edtKi.getText()+"%"
+                        +edtKd.getText()+"&"+ edtCte.getText()+"*"+edtVel.getText()+"}";
 
                 // enviar por bluetooth
                 if(con){
@@ -224,24 +227,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // copia para area de trasferencia
-        btnCopiar.setOnClickListener(new View.OnClickListener() {
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                // manipulador da area de trasferencia
-                ClipboardManager clipboard = (ClipboardManager)
-                        getSystemService(Context.CLIPBOARD_SERVICE);
+                String texto =
+                "{"+edtKp.getText()+"/"+ edtKi.getText()+"%"
+                        +edtKd.getText()+"&"+ edtCte.getText()+"*0}";
 
-                // adiciona o dadosGrafico em algo "copiavel"
-                ClipData clip = ClipData.newPlainText("simple text", copiaDados());
-
-                // adiciona oq foi copiado na area de trasferencia
-                clipboard.setPrimaryClip(clip);
-
-                // mensagem
-                Toast.makeText(MainActivity.this,
-                        "Copiado para a área de trasferencia!", Toast.LENGTH_SHORT).show();
-
+                // enviar por bluetooth
+                if(con){
+                    MainActivity.conTh.enviar(texto);
+                }else{
+                    Toast.makeText(MainActivity.this, "Desconectado!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -320,26 +319,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    protected String copiaDados(){
-        /*
-        * Botei \n pq se colar no excel ele divide em celulas diferentes
-        * dai fica mais facil pra montar uma planhilha com os graficos
-        * */
-
-        String dadosGrafico = Arrays.toString(valores);                   // converte array pra string
-        dadosGrafico = dadosGrafico.substring(1, dadosGrafico.length()-1);// retira os []
-        dadosGrafico = dadosGrafico.replaceAll(",", "\n");// trasforma virgula em \n
-
-        // salva as constantes
-        String constatnes = "Ke: "+edtKe.getText()+" Kd: "+edtKd.getText()+" Ki: "+edtKi.getText();
-
-        // salva a velocidade
-        String vel = "Velocidade: " + edtVel.getText();
-
-        // retorna as constantes mais o grafico
-        return(constatnes + "\n" + vel + "\n" + dadosGrafico);
     }
 
     protected void criaGrafico(){
